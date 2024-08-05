@@ -55,6 +55,12 @@ from paperless_mail.views import MailAccountTestView
 from paperless_mail.views import MailAccountViewSet
 from paperless_mail.views import MailRuleViewSet
 
+from file_handler.views import FileUploadFTPView
+from file_handler.views import ListFilesOnFTP
+from file_handler.views import ProcessFromFTPPath
+from file_handler.views import ProcessSingleFileFromFTP
+from file_handler.views import RetrieveAndOpenFileFromFTP
+
 api_router = DefaultRouter()
 api_router.register(r"correspondents", CorrespondentViewSet)
 api_router.register(r"document_types", DocumentTypeViewSet)
@@ -77,6 +83,12 @@ api_router.register(r"config", ApplicationConfigurationViewSet)
 
 
 urlpatterns = [
+    path("upload-file-from-path/", ProcessFromFTPPath.as_view()),
+    path("upload-single-file-from-path/", ProcessSingleFileFromFTP.as_view()),
+    path("upload-file-ftp/", FileUploadFTPView.as_view()),
+    path("list-files-ftp/", ListFilesOnFTP.as_view()),
+    path("retrieve-open-file/<str:file_name>", RetrieveAndOpenFileFromFTP.as_view()),
+
     re_path(
         r"^api/",
         include(
@@ -98,7 +110,8 @@ urlpatterns = [
                     GlobalSearchView.as_view(),
                     name="global_search",
                 ),
-                re_path("^statistics/", StatisticsView.as_view(), name="statistics"),
+                re_path("^statistics/", StatisticsView.as_view(),
+                        name="statistics"),
                 re_path(
                     "^documents/post_document/",
                     PostDocumentView.as_view(),
@@ -124,7 +137,8 @@ urlpatterns = [
                     RemoteVersionView.as_view(),
                     name="remoteversion",
                 ),
-                re_path("^ui_settings/", UiSettingsView.as_view(), name="ui_settings"),
+                re_path("^ui_settings/", UiSettingsView.as_view(),
+                        name="ui_settings"),
                 re_path(
                     "^acknowledge_tasks/",
                     AcknowledgeTasksView.as_view(),
@@ -141,7 +155,8 @@ urlpatterns = [
                     BulkEditObjectsView.as_view(),
                     name="bulk_edit_objects",
                 ),
-                path("profile/generate_auth_token/", GenerateAuthTokenView.as_view()),
+                path("profile/generate_auth_token/",
+                     GenerateAuthTokenView.as_view()),
                 path(
                     "profile/disconnect_social_account/",
                     DisconnectSocialAccountView.as_view(),
@@ -179,7 +194,8 @@ urlpatterns = [
                 re_path(
                     r"^doc/(?P<pk>\d+)$",
                     RedirectView.as_view(
-                        url=settings.BASE_URL + "api/documents/%(pk)s/download/",
+                        url=settings.BASE_URL +
+                        "api/documents/%(pk)s/download/",
                     ),
                 ),
                 re_path(
@@ -191,7 +207,8 @@ urlpatterns = [
                 re_path(
                     r"^preview/(?P<pk>\d+)$",
                     RedirectView.as_view(
-                        url=settings.BASE_URL + "api/documents/%(pk)s/preview/",
+                        url=settings.BASE_URL +
+                        "api/documents/%(pk)s/preview/",
                     ),
                 ),
             ],

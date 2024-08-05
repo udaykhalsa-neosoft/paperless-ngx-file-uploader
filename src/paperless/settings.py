@@ -305,6 +305,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "django_extensions",
     "paperless",
+    "file_handler",
     "documents.apps.DocumentsConfig",
     "paperless_tesseract.apps.PaperlessTesseractConfig",
     "paperless_text.apps.PaperlessTextConfig",
